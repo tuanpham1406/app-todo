@@ -1,28 +1,47 @@
 <template>
-  <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
-  </div>
+	<div id="container">
+		<app-header :item-count="items.length" :max-item="maxItem"></app-header>
+		<app-new-item @itemAdded="addItem" :items="items"></app-new-item>
+		<app-items-layout :items="items" @itemRemoved="removeItem"></app-items-layout>
+		<div class="row mt-3">
+			<div class="col-sm-12 text-center">
+				<div class="alert alert-info">
+					Info: click on a Item delete it!
+				</div>
+			</div>
+		</div>
+	</div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+    import ItemsLayout from "@/components/ItemsLayout";
+    import NewItem from "@/components/NewItem";
+    import Header from "@/components/Header";
 
-export default {
-  name: 'app',
-  components: {
-    HelloWorld
-  }
-}
+    export default {
+        name: 'app',
+        components: {
+            AppItemsLayout: ItemsLayout,
+            AppNewItem: NewItem,
+            AppHeader: Header
+        },
+        data: () => ({
+            items: [],
+            maxItem: 10
+        }),
+        methods: {
+            addItem(item) {
+                if (this.items.length >= this.maxItem) {
+                    return alert('Please remove item first!')
+                }
+                this.items.push(item)
+            },
+            removeItem(index) {
+                this.items.splice(index, 1)
+            }
+        }
+    }
 </script>
 
 <style>
-#app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
 </style>
